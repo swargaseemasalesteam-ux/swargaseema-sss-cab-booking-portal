@@ -461,7 +461,7 @@
   async function submitBooking() {
     if (!validate()) return;
     document.getElementById('submitting').classList.add('show');
-    const ref = 'AMY-' + Math.floor(100000 + Math.random() * 900000);
+    const ref = 'SSS-' + Math.floor(100000 + Math.random() * 900000);
     const payload = {
       action: 'addBooking', bookingRef: ref,
       name: document.getElementById('fName').value.trim(),
