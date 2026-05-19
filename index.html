@@ -289,7 +289,7 @@
         <div class="form-grid">
           <div class="form-group" id="grp-source">
             <label>📡 Source <span>*</span></label>
-            <select id="fSource" style="padding:0.6rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;color:var(--text);background:#fff;cursor:pointer;width:100%;outline:none;">
+            <select id="fSource" style="padding:0.6rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;color:var(--text);background:#fff;cursor:pointer;width:100%;outline:none;" onchange="var o=document.getElementById('fSourceOther');o.style.display=this.value==='Other'?'block':'none';if(this.value!=='Other')o.value='';">
               <option value="">-- Select Source --</option>
               <option>Lead Space</option><option>Bhakti</option><option>ABN</option>
               <option>TV5</option><option>Sakshi</option><option>ETV AP/TS</option>
@@ -308,8 +308,11 @@
               <option>Website</option><option>BK Channel</option><option>NTV</option>
               <option>RCS Msg</option><option>Web enquiry</option><option>Bulk data</option>
               <option>Credai</option><option>Reference</option><option>Outgoing</option>
-              <option>EX-Owner</option><option>DSV</option><option>Sai Anurag Colony</option><option>ETV Ent</option><option>weekend home</option>
+              <option>EX-Owner</option><option>DSV</option><option>Sai Anurag Colony</option>
+              <option>ETV Ent</option><option>weekend home</option>
+              <option value="Other">Other</option>
             </select>
+            <input type="text" id="fSourceOther" placeholder="Enter source" style="display:none;margin-top:0.5rem;padding:0.6rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;color:var(--text);background:#fff;width:100%;box-sizing:border-box;outline:none;"/>
             <div class="err-msg" id="err-source"></div>
           </div>
           <div class="form-group" id="grp-telecaller">
@@ -446,8 +449,11 @@
     });
     if (!selectedDate) { document.getElementById('err-date').textContent = 'Please select a visit date'; ok = false; }
     if (!selectedTime) { document.getElementById('err-time').textContent = 'Please select a time slot'; ok = false; }
-    if (!document.getElementById('fSource').value) {
-      document.getElementById('grp-source').classList.add('error'); document.getElementById('err-source').textContent = 'Please select a source'; ok = false;
+    const srcVal = document.getElementById('fSource').value;
+    const srcOther = document.getElementById('fSourceOther').value.trim();
+    if (!srcVal || (srcVal === 'Other' && !srcOther)) {
+      document.getElementById('grp-source').classList.add('error');
+      document.getElementById('err-source').textContent = srcVal === 'Other' ? 'Please enter the source' : 'Please select a source'; ok = false;
     } else { document.getElementById('grp-source').classList.remove('error'); document.getElementById('err-source').textContent = ''; }
     const tcVal = document.getElementById('fTeleCaller').value;
     const tcOther = document.getElementById('fTeleCallerOther').value.trim();
@@ -472,7 +478,7 @@
       address: document.getElementById('fAddress').value.trim(),
       date: selectedDate, time: selectedTime, members: memberCount,
       carType: document.getElementById('carType').value,
-      source: document.getElementById('fSource').value,
+      source: document.getElementById('fSource').value === 'Other' ? document.getElementById('fSourceOther').value.trim() : document.getElementById('fSource').value,
       teleCaller: (document.getElementById('fTeleCaller').value === 'Other' ? document.getElementById('fTeleCallerOther').value.trim() : document.getElementById('fTeleCaller').value)
     };
     try {
@@ -495,6 +501,8 @@
     document.getElementById('memberVal').textContent = '2';
     document.getElementById('carType').value = 'Ertiga';
     document.getElementById('fSource').value = '';
+    document.getElementById('fSourceOther').style.display = 'none';
+    document.getElementById('fSourceOther').value = '';
     document.getElementById('fTeleCaller').value = '';
     document.getElementById('fTeleCallerOther').style.display = 'none';
     document.getElementById('fTeleCallerOther').value = '';
