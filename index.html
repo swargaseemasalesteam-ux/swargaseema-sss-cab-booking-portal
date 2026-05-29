@@ -52,7 +52,7 @@
   .form-group label{font-size:0.8rem;font-weight:600;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.5px;}
   .form-group label span{color:#c0392b;margin-left:2px;}
   .form-group input,.form-group select{padding:0.8rem 1rem;border:2px solid #e8ddd5;border-radius:6px;font-family:'Outfit',sans-serif;font-size:0.95rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
-  .form-group input:focus,.form-group select:focus{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(139,26,26,0.08);}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(139,26,26,0.08);}
   .form-group input::placeholder{color:#bbb;}
 
   /* DATE CARDS */
@@ -336,6 +336,15 @@
         </div>
       </div>
 
+      <!-- NOTES -->
+      <div class="form-section">
+        <div class="form-section-title">📝 Notes</div>
+        <div class="form-group">
+          <label>Additional Notes</label>
+          <textarea id="fNotes" placeholder="Any additional information about this booking…" rows="3" style="padding:0.8rem 1rem;border:2px solid #e8ddd5;border-radius:6px;font-family:'Outfit',sans-serif;font-size:0.95rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.2s;width:100%;resize:vertical;line-height:1.5;"></textarea>
+        </div>
+      </div>
+
       <div class="form-footer">
         <button class="btn-reset" onclick="resetForm()">🔄 Reset Form</button>
         <button class="btn-submit" id="btnSubmit" onclick="submitBooking()">
@@ -479,7 +488,8 @@
       date: selectedDate, time: selectedTime, members: memberCount,
       carType: document.getElementById('carType').value,
       source: document.getElementById('fSource').value === 'Other' ? document.getElementById('fSourceOther').value.trim() : document.getElementById('fSource').value,
-      teleCaller: (document.getElementById('fTeleCaller').value === 'Other' ? document.getElementById('fTeleCallerOther').value.trim() : document.getElementById('fTeleCaller').value)
+      teleCaller: (document.getElementById('fTeleCaller').value === 'Other' ? document.getElementById('fTeleCallerOther').value.trim() : document.getElementById('fTeleCaller').value),
+      notes: document.getElementById('fNotes').value.trim()
     };
     try {
       await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) });
@@ -500,6 +510,7 @@
     selectedDate = ''; selectedTime = ''; memberCount = 2;
     document.getElementById('memberVal').textContent = '2';
     document.getElementById('carType').value = 'Ertiga';
+    document.getElementById('fNotes').value = '';
     document.getElementById('fSource').value = '';
     document.getElementById('fSourceOther').style.display = 'none';
     document.getElementById('fSourceOther').value = '';
